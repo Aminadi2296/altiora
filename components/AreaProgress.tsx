@@ -46,7 +46,7 @@ export default AreaProgress;
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    marginBottom: 3,
   },
   name: {
     fontSize: 18,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     width: '100%',
-    height: 25,
+    height: 20,
     backgroundColor: '#e0e0e0',
     borderRadius: 8,
     overflow: 'hidden',

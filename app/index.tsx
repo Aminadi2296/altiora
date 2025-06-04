@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import AreaProgress from '../components/AreaProgress';
 import GoalItem from '../components/GoalItem';
 
@@ -19,20 +19,23 @@ const dummyGoals = [
 
 export default function Home() {
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: 'white', padding: 16, paddingTop: 40 }}>
-      {/* Avatar and areas bars - You can style this later to be in one row */}
-      <Image
-        source={require('../assets/images/avatar.png')}
-        style={{ width: 48, height: 48, borderRadius: 24, marginBottom: 16 }}
-      />
-
-      {dummyAreas.map((area, index) => (
-        <AreaProgress key={index} name={area.name} xp={area.xp} />
-      ))}
+    <ScrollView style={styles.container}>
+      {/* Horizontal container for avatar and progress bars */}
+      <View style={styles.topRow}>
+        <Image
+          source={require('../assets/images/avatar.png')}
+          style={styles.avatar}
+        />
+        <View style={styles.areasContainer}>
+          {dummyAreas.map((area, index) => (
+            <AreaProgress key={index} name={area.name} xp={area.xp} />
+          ))}
+        </View>
+      </View>
 
       {/* Goals Section */}
-      <View style={{ marginTop: 32 }}>
-        <Text style={{ fontSize: 20, fontWeight: '700', marginBottom: 12 }}>Goals</Text>
+      <View style={styles.goalsSection}>
+        <Text style={styles.goalsTitle}>Goals</Text>
         {dummyGoals.map((goal, index) => (
           <GoalItem key={index} name={goal.name} area={goal.area} xp={goal.xp} />
         ))}
@@ -40,3 +43,33 @@ export default function Home() {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 16,
+    paddingTop: 40,
+  },
+  topRow: {
+    flexDirection: 'row',       // Arrange children horizontally
+    alignItems: 'center',       // Vertically center avatar and bars
+  },
+  avatar: {
+    width: 190,                  // Bigger avatar
+    height: 240,
+    borderRadius: 40,
+    marginRight: 5,            // Space between avatar and bars
+  },
+  areasContainer: {
+    flex: 1,                    // Take all remaining space
+  },
+  goalsSection: {
+    marginTop: 32,
+  },
+  goalsTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 12,
+  },
+});
