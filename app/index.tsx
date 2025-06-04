@@ -1,7 +1,10 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import AreaProgress from '../components/AreaProgress';
 import GoalItem from '../components/GoalItem';
+
+import { useRouter } from 'expo-router';
+
 
 const dummyAreas = [
   { name: 'Health', xp: 70 },
@@ -18,9 +21,10 @@ const dummyGoals = [
 ];
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <ScrollView style={styles.container}>
-      {/* Horizontal container for avatar and progress bars */}
       <View style={styles.topRow}>
         <Image
           source={require('../assets/images/avatar.png')}
@@ -33,12 +37,15 @@ export default function Home() {
         </View>
       </View>
 
-      {/* Goals Section */}
       <View style={styles.goalsSection}>
         <Text style={styles.goalsTitle}>Goals</Text>
         {dummyGoals.map((goal, index) => (
           <GoalItem key={index} name={goal.name} area={goal.area} xp={goal.xp} />
         ))}
+
+        <Pressable onPress={() => router.push('/create-goal')}>
+          <Text style={{ fontSize: 16, color: 'blue', marginTop: 10 }}>+ Add Goal</Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
