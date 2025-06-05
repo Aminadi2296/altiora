@@ -1,17 +1,9 @@
 import React from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import AreaProgress from '../components/AreaProgress';
 import GoalItem from '../components/GoalItem';
 
 import { useRouter } from 'expo-router';
-
-
-const dummyAreas = [
-  { name: 'Health', xp: 70 },
-  { name: 'Career', xp: 40 },
-  { name: 'Learning', xp: 20 },
-  { name: 'Family', xp: 90 },
-];
 
 const dummyGoals = [
   { name: 'Finish project report', area: 'Career', xp: 2 },
@@ -22,7 +14,14 @@ const dummyGoals = [
 
 export default function Home() {
   const router = useRouter();
-
+   const [areas, setAreas] = React.useState([
+    { name: 'Health', xp: 70 },
+    { name: 'Career', xp: 40 },
+    { name: 'Learning', xp: 20 },
+    { name: 'Family', xp: 90 },
+  ]);
+const [showAddForm, setShowAddForm] = React.useState(false);
+const [newAreaName, setNewAreaName] = React.useState('');
   return (
     <ScrollView style={styles.container}>
       <View style={styles.topRow}>
@@ -31,10 +30,75 @@ export default function Home() {
           style={styles.avatar}
         />
         <View style={styles.areasContainer}>
-          {dummyAreas.map((area, index) => (
+          {areas.map((area, index) => (
             <AreaProgress key={index} name={area.name} xp={area.xp} />
           ))}
         </View>
+        <View style={{ marginTop: 16 }}>
+  {!showAddForm ? (
+    <Pressable
+      style={{
+        backgroundColor: '#007AFF',
+        padding: 10,
+        borderRadius: 6,
+        alignItems: 'center',
+      }}
+      onPress={() => setShowAddForm(true)}
+    >
+      <Text style={{ color: 'white', fontWeight: '600' }}>+ Add Area</Text>
+    </Pressable>
+  ) : (
+    <View>
+      <TextInput
+        placeholder="New area name"
+        value={newAreaName}
+        onChangeText={setNewAreaName}
+        style={{
+          borderWidth: 1,
+          borderColor: '#ccc',
+          borderRadius: 6,
+          padding: 8,
+          marginBottom: 8,
+        }}
+      />
+      <View style={{ flexDirection: 'row', gap: 8 }}>
+        <Pressable
+          style={{
+            backgroundColor: '#4CAF50',
+            padding: 10,
+            borderRadius: 6,
+            flex: 1,
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            if (!newAreaName.trim()) return;
+            setAreas([...areas, { name: newAreaName.trim(), xp: 0 }]);
+            setNewAreaName('');
+            setShowAddForm(false);
+          }}
+        >
+          <Text style={{ color: 'white' }}>Save</Text>
+        </Pressable>
+
+        <Pressable
+          style={{
+            backgroundColor: '#ccc',
+            padding: 10,
+            borderRadius: 6,
+            flex: 1,
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            setNewAreaName('');
+            setShowAddForm(false);
+          }}
+        >
+          <Text>Cancel</Text>
+        </Pressable>
+      </View>
+    </View>
+  )}
+</View>
       </View>
 
       <View style={styles.goalsSection}>
