@@ -4,6 +4,7 @@ import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-nativ
 
 import AreaProgress from '../components/AreaProgress';
 import GoalItem from '../components/GoalItem';
+import { useAreaStore } from '../store/useAreaStore';
 import styles from '../styles/styles';
 
 const dummyGoals = [
@@ -15,12 +16,8 @@ const dummyGoals = [
 
 export default function Home() {
   const router = useRouter();
-  const [areas, setAreas] = React.useState([
-    { name: 'Health', xp: 70 },
-    { name: 'Career', xp: 40 },
-    { name: 'Learning', xp: 20 },
-    { name: 'Family', xp: 90 },
-  ]);
+  const areas = useAreaStore((state) => state.areas);
+  const addArea = useAreaStore((state) => state.addArea);
   const [showAddForm, setShowAddForm] = React.useState(false);
   const [newAreaName, setNewAreaName] = React.useState('');
 
@@ -53,7 +50,7 @@ export default function Home() {
                   style={styles.saveButton}
                   onPress={() => {
                     if (!newAreaName.trim()) return;
-                    setAreas([...areas, { name: newAreaName.trim(), xp: 0 }]);
+                    addArea(newAreaName.trim());
                     setNewAreaName('');
                     setShowAddForm(false);
                   }}

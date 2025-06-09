@@ -2,10 +2,10 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-
-const areas = ['Health', 'Career', 'Learning', 'Family']; // Reuse or make dynamic later
+import { useAreaStore } from '../store/useAreaStore';
 
 export default function CreateGoalScreen() {
+  const areas = useAreaStore((state) => state.areas);
   const router = useRouter();
 
   const [name, setName] = useState('');
@@ -41,10 +41,10 @@ export default function CreateGoalScreen() {
       <View style={styles.buttonRow}>
         {areas.map((a) => (
           <Pressable
-            key={a}
+            key={a.name}
             onPress={() => setArea(a)}
             style={[styles.optionButton, area === a && styles.optionSelected]}>
-            <Text>{a}</Text>
+            <Text>{a.name}</Text>
           </Pressable>
         ))}
       </View>
