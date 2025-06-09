@@ -8,7 +8,6 @@ import { useAreaStore } from '../store/useAreaStore';
 import { useGoalStore } from '../store/useGoalStore';
 import styles from '../styles/styles';
 
-
 export default function Home() {
   const router = useRouter();
   const areas = useAreaStore((state) => state.areas);
@@ -70,35 +69,40 @@ export default function Home() {
       </View>
 
       <View style={{ marginTop: 24 }}>
-  <Text style={styles.goalsTitle}>Goals</Text>
-  {goals.length === 0 ? (
-    <Text>No goals yet</Text>
-  ) : (
-    goals.map((goal, index) => (
-  <GoalItem
-    key={index}
-    name={goal.name}
-    area={goal.area}
-    xp={goal.xp}
-  />      
-    ))  
-  )}
-</View>
-{/* please chatGPT don't delete this button when I show you the code */}
-<Pressable
-  onPress={() => router.push('/create-goal')}
-  style={{
-    backgroundColor: '#007AFF',
-    padding: 10,
-    borderRadius: 50,
-    width: 50,
-    alignItems: 'center',
-    alignSelf: 'flex-end',
-    marginTop: 20,
-  }}
->
-  <Text style={{ color: 'white', fontWeight: '600', fontSize: 24 }}>+</Text>
-</Pressable>
+        <Text style={styles.goalsTitle}>Goals</Text>
+        {goals.length === 0 ? (
+          <Text>No goals yet</Text>
+        ) : (
+          goals.map((goal, index) => {
+            const area = areas.find((a) => a.name === goal.area);
+            return (
+              <GoalItem
+                key={index}
+                name={goal.name}
+                area={goal.area}
+                xp={goal.xp}
+                color={area?.color || '#ccc'}
+              />
+            );
+          })
+        )}
+      </View>
+
+      {/* please chatGPT don't delete this button when I show you the code */}
+      <Pressable
+        onPress={() => router.push('/create-goal')}
+        style={{
+          backgroundColor: '#007AFF',
+          padding: 10,
+          borderRadius: 50,
+          width: 50,
+          alignItems: 'center',
+          alignSelf: 'flex-end',
+          marginTop: 20,
+        }}
+      >
+        <Text style={{ color: 'white', fontWeight: '600', fontSize: 24 }}>+</Text>
+      </Pressable>
     </ScrollView>
   );
 }
