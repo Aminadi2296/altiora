@@ -82,6 +82,24 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '600',
   },
+  goalItem: {
+  padding: 12,
+  marginBottom: 10,
+  borderRadius: 8,
+  backgroundColor: '#f4f4f4',
+  borderWidth: 1,
+  borderColor: '#ddd',
+},
+goalText: {
+  fontSize: 16,
+  fontWeight: '500',
+  color: '#333',
+},
+goalXP: {
+  fontSize: 14,
+  color: '#666',
+}
+
 });
 
 export default styles;

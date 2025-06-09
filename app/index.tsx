@@ -5,14 +5,9 @@ import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-nativ
 import AreaProgress from '../components/AreaProgress';
 import GoalItem from '../components/GoalItem';
 import { useAreaStore } from '../store/useAreaStore';
+import { useGoalStore } from '../store/useGoalStore';
 import styles from '../styles/styles';
 
-const dummyGoals = [
-  { name: 'Finish project report', area: 'Career', xp: 2 },
-  { name: 'Meditate daily', area: 'Health', xp: 3 },
-  { name: 'Read book', area: 'Learning', xp: 5 },
-  { name: 'Skip TV for study', area: 'Learning', xp: -3 },
-];
 
 export default function Home() {
   const router = useRouter();
@@ -20,6 +15,7 @@ export default function Home() {
   const addArea = useAreaStore((state) => state.addArea);
   const [showAddForm, setShowAddForm] = React.useState(false);
   const [newAreaName, setNewAreaName] = React.useState('');
+  const goals = useGoalStore((state) => state.goals);
 
   return (
     <ScrollView style={styles.container}>
@@ -73,19 +69,36 @@ export default function Home() {
         </View>
       </View>
 
-      <View style={styles.goalsSection}>
-        <Text style={styles.goalsTitle}>Goals</Text>
-
-        {/* 🟡 Goal List */}
-        {dummyGoals.map((goal, index) => (
-          <GoalItem key={index} name={goal.name} area={goal.area} xp={goal.xp} />
-        ))}
-
-        {/* 🔵 Add Goal Button */}
-        <Pressable onPress={() => router.push('/create-goal')} style={styles.addGoalButton}>
-          <Text style={styles.addGoalButtonText}>+ Add Goal</Text>
-        </Pressable>
-      </View>
+      <View style={{ marginTop: 24 }}>
+  <Text style={styles.goalsTitle}>Goals</Text>
+  {goals.length === 0 ? (
+    <Text>No goals yet</Text>
+  ) : (
+    goals.map((goal, index) => (
+  <GoalItem
+    key={index}
+    name={goal.name}
+    area={goal.area}
+    xp={goal.xp}
+  />      
+    ))  
+  )}
+</View>
+{/* please chatGPT don't delete this button when I show you the code */}
+<Pressable
+  onPress={() => router.push('/create-goal')}
+  style={{
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 50,
+    width: 50,
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    marginTop: 20,
+  }}
+>
+  <Text style={{ color: 'white', fontWeight: '600', fontSize: 24 }}>+</Text>
+</Pressable>
     </ScrollView>
   );
 }
