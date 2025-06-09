@@ -1,16 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+
 
 type GoalItemProps = {
   name: string;
   area: string;
   xp: number;
-  color: string; // Add this
+  color: string;
+  onPress?: () => void; 
 };
 
-const GoalItem: React.FC<GoalItemProps> = ({ name, area, xp, color }) => {
+const GoalItem: React.FC<GoalItemProps> = ({ name, area, xp, color, onPress }) => {
   return (
-    <View style={styles.wrapper}>
+    <Pressable onPress={onPress} style={styles.wrapper}>
       <View style={[styles.colorLine, { backgroundColor: color }]} />
       <View style={styles.container}>
         <Text style={styles.goalName}>{name}</Text>
@@ -21,7 +23,7 @@ const GoalItem: React.FC<GoalItemProps> = ({ name, area, xp, color }) => {
           </Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

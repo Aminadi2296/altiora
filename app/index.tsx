@@ -5,16 +5,27 @@ import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-nativ
 import AreaProgress from '../components/AreaProgress';
 import GoalItem from '../components/GoalItem';
 import { useAreaStore } from '../store/useAreaStore';
-import { useGoalStore } from '../store/useGoalStore';
+import { Goal, useGoalStore } from '../store/useGoalStore';
 import styles from '../styles/styles';
 
 export default function Home() {
   const router = useRouter();
+
   const areas = useAreaStore((state) => state.areas);
+  const updateAreaXP = useAreaStore((state) => state.updateAreaXP);
   const addArea = useAreaStore((state) => state.addArea);
+
+  const goals = useGoalStore((state) => state.goals);
+  // const removeGoal = useGoalStore((state) => state.removeGoal);
+
   const [showAddForm, setShowAddForm] = React.useState(false);
   const [newAreaName, setNewAreaName] = React.useState('');
-  const goals = useGoalStore((state) => state.goals);
+
+  // Handle clicking a goal: subtract XP and remove goal
+  const handleGoalPress = (goal: Goal) => {
+    updateAreaXP(goal.area, goal.xp);
+    // removeGoal(goal.name);
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -82,6 +93,7 @@ export default function Home() {
                 area={goal.area}
                 xp={goal.xp}
                 color={area?.color || '#ccc'}
+                onPress={() => handleGoalPress(goal)} 
               />
             );
           })

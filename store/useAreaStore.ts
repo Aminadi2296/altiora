@@ -9,6 +9,7 @@ interface Area {
 interface AreaStore {
   areas: Area[];
   addArea: (name: string) => void;
+  updateAreaXP: (areaName: string, deltaXP: number) => void;
 }
 
 export const predefinedColors = [
@@ -47,4 +48,13 @@ export const useAreaStore = create<AreaStore>((set, get) => ({
       areas: [...state.areas, newArea],
     }));
   },
+
+  updateAreaXP: (areaName: string, deltaXP: number) =>
+  set((state) => ({
+    areas: state.areas.map((area) =>
+      area.name === areaName
+        ? { ...area, xp: Math.max(0, area.xp + deltaXP) } // no negative XP
+        : area
+    ),
+  })),
 }));
