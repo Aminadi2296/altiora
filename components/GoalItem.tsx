@@ -1,71 +1,76 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-type GoalItemProps = {
+interface GoalItemProps {
   name: string;
   area: string;
   xp: number;
-  color: string; // <-- this should be passed in from the parent
-  onPress?: () => void;
-};
+  color: string;
+  onPress: () => void;
+  onXPPress: () => void;
+}
 
-const GoalItem: React.FC<GoalItemProps> = ({ name, area, xp, color, onPress }) => {
+export default function GoalItem({
+  name,
+  area,
+  xp,
+  color,
+  onPress,
+  onXPPress,
+}: GoalItemProps) {
   return (
-    <Pressable onPress={onPress} style={styles.wrapper}>
-      <View style={[styles.colorLine, { backgroundColor: color }]} />
-      <View style={styles.container}>
-        <Text style={styles.goalName}>{name}</Text>
-        <View style={styles.bottomRow}>
-          <Text style={styles.area}>{area}</Text>
-          <Text style={[styles.xp, xp < 0 ? styles.negativeXP : styles.positiveXP]}>
-            {xp > 0 ? `+${xp} XP` : `${xp} XP`}
-          </Text>
-        </View>
-      </View>
-    </Pressable>
-  );
-};
+    <View style={styles.container}>
+      {/* Left side: goal name and area */}
+      <Pressable onPress={onPress} style={styles.leftSide}>
+        <Text style={[styles.goalName, { color }]}>{name}</Text>
+        <Text style={styles.areaName}>{area}</Text>
+      </Pressable>
 
-export default GoalItem;
+      {/* Right side: XP button */}
+      <Pressable
+        onPress={() => {
+          console.log('XP button pressed:', name, area, xp);
+          onXPPress();
+        }}
+        style={[styles.xpButton, { borderColor: color }]}
+      >
+        <Text style={[styles.xpText, { color }]}>
+          {xp > 0 ? `+${xp} XP` : `${xp} XP`}
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flexDirection: 'row',
-    marginBottom: 12,
-    backgroundColor: 'white',
-    borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  colorLine: {
-    width: 6,
-  },
   container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+  },
+  leftSide: {
     flex: 1,
-    padding: 12,
   },
   goalName: {
     fontSize: 16,
     fontWeight: '600',
   },
-  bottomRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 2,
-  },
-  area: {
+  areaName: {
     fontSize: 12,
-    color: '#555',
+    color: '#666',
   },
-  xp: {
-    fontSize: 12,
+  xpButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderRadius: 20,
+    backgroundColor: '#eee', // makes the button more visible
+  },
+  xpText: {
     fontWeight: '700',
-  },
-  positiveXP: {
-    color: 'green',
-  },
-  negativeXP: {
-    color: 'red',
   },
 });

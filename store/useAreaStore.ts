@@ -15,11 +15,11 @@ interface AreaStore {
 export const predefinedColors = [
   '#faa307', // Red-Orange
   '#08427a', // Blue
+  '#ef233c', // Red
   '#4895ef', // Blue-Gray
   '#ffd670', // Yellow
   '#219ebc', // Turquoise
   '#7678ed', // Purple
-  '#ef233c', // Red
   '#F39C12', // Orange
   '#ff8fab', // Pink
   '#2ECC71', // Light Green
@@ -54,8 +54,8 @@ export const useAreaStore = create<AreaStore>((set, get) => ({
   updateAreaXP: (areaName: string, deltaXP: number) =>
     set((state) => ({
       areas: state.areas.map((area) =>
-        area.name === areaName
-          ? { ...area, xp: Math.max(0, area.xp + deltaXP) } // no negative XP
+        area.name.trim().toLowerCase() === areaName.trim().toLowerCase()
+          ? { ...area, xp: Math.max(0, area.xp + deltaXP) }
           : area
       ),
     })),

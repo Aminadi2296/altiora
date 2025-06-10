@@ -103,26 +103,32 @@ export default function Home() {
           <Text>No goals yet</Text>
         ) : (
           goals.map((goal, index) => {
-            const area = areas.find((a) => a.name.trim().toLowerCase() === goal.area.trim().toLowerCase());
-            return (
-              <GoalItem
-                key={index}
-                name={goal.name}
-                area={goal.area}
-                xp={goal.xp}
-                color={area?.color || '#ccc'}
-                onPress={() => router.push({
-                pathname: '/create-goal',
-                params: {
-                mode: 'edit',
-                name: goal.name,
-                area: goal.area,
-                xp: goal.xp.toString(),
-              },
-            })} 
-              />
-            );
-          })
+  const area = areas.find((a) => a.name.trim().toLowerCase() === goal.area.trim().toLowerCase());
+  return (
+    <GoalItem
+      key={goal.name}
+      name={goal.name}
+      area={goal.area}
+      xp={goal.xp}
+      color={area?.color || '#ccc'}
+      onPress={() => {
+        router.push({
+          pathname: '/create-goal',
+          params: {
+            mode: 'edit',
+            name: goal.name,
+            area: goal.area,
+            xp: goal.xp.toString(),
+          },
+        });
+      }}
+      onXPPress={() => {
+        console.log('XP pressed:', goal.name, goal.xp);
+        updateAreaXP(goal.area, goal.xp);
+      }}
+    />
+  );
+})
         )}
       </View>
 
