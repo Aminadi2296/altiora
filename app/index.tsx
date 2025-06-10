@@ -4,9 +4,10 @@ import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-nativ
 
 import AreaProgress from '../components/AreaProgress';
 import GoalItem from '../components/GoalItem';
-import { useAreaStore } from '../store/useAreaStore';
+import { predefinedColors, useAreaStore } from '../store/useAreaStore';
 import { Goal, useGoalStore } from '../store/useGoalStore';
 import styles from '../styles/styles';
+
 
 export default function Home() {
   const router = useRouter();
@@ -26,17 +27,34 @@ export default function Home() {
     updateAreaXP(goal.area, goal.xp);
     // removeGoal(goal.name);
   };
+  const usedColors = new Set<string>();
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.topRow}>
         <Image source={require('../assets/images/avatar.png')} style={styles.avatar} />
-
+      
         <View style={styles.areasContainer}>
-          {areas.map((area, index) => (
-            <AreaProgress key={index} name={area.name} xp={area.xp} />
-          ))}
-        </View>
+        {areas.map((area, index) => {
+        let displayColor = area.color;
+    
+    if (usedColors.has(displayColor)) {
+      const availableColor = predefinedColors.find(c => !usedColors.has(c));
+      if (availableColor) displayColor = availableColor;
+    }
+    
+    usedColors.add(displayColor);
+    
+    return (
+      <AreaProgress
+        key={index}
+        name={area.name}
+        xp={area.xp}
+        color={displayColor}
+      />
+    );
+  })}
+</View>
 
         <View style={styles.addAreaWrapper}>
           {!showAddForm ? (

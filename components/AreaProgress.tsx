@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 type AreaProgressProps = {
   name: string;
   xp: number;
+  color?: string;
 };
 
 // Calculate level from XP
@@ -23,7 +24,7 @@ const getProgress = (xp: number): number => {
   return Math.min(progress, 100);
 };
 
-const AreaProgress: React.FC<AreaProgressProps> = ({ name, xp }) => {
+const AreaProgress: React.FC<AreaProgressProps> = ({ name, xp, color = '#4CAF50'  }) => {
   const level = getLevel(xp);
   const progress = getProgress(xp);
 
@@ -32,7 +33,7 @@ const AreaProgress: React.FC<AreaProgressProps> = ({ name, xp }) => {
       <Text style={styles.name}>{name}</Text>
 
       <View style={styles.progressBar}>
-        <View style={[styles.progressFill, { width: `${progress}%` }]} />
+        <View style={[styles.progressFill, { width: `${progress}%`, backgroundColor: color }]} /> 
       </View>
 
       <Text style={styles.levelText}>
