@@ -13,15 +13,15 @@ interface AreaStore {
 }
 
 export const predefinedColors = [
-  '#FF5733', // Red-Orange
-  '#33B5FF', // Blue
-  '#33FF57', // Green
-  '#FFC300', // Yellow
-  '#A569BD', // Purple
-  '#FF33A6', // Pink
-  '#33FFF6', // Cyan
+  '#faa307', // Red-Orange
+  '#08427a', // Blue
+  '#4895ef', // blue-Gray
+  '#ffd670', // Yellow
+  '#219ebc', // Tourquoise
+  '#7678ed', // Purple
+  '#ef233c', // red
   '#F39C12', // Orange
-  '#34495E', // Dark Blue-Gray
+  '#ff8fab', // Pink
   '#2ECC71', // Light Green
 ];
 

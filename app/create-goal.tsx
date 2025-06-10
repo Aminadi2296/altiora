@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
   Button,
@@ -14,25 +14,38 @@ import { useGoalStore } from '../store/useGoalStore';
 
 export default function CreateGoalScreen() {
   const router = useRouter();
+  const { mode, name, area, xp } = useLocalSearchParams();
 
   const areas = useAreaStore((state) => state.areas);
   const addGoal = useGoalStore((state) => state.addGoal);
+  const updateGoal = useGoalStore((state) => state.updateGoal);
+  const removeGoal = useGoalStore((state) => state.removeGoal);
 
-  const [name, setName] = useState('');
-  const [area, setArea] = useState(areas[0] || '');
-  const [xp, setXp] = useState(2);
-  const [isPositive, setIsPositive] = useState(true);
+  const initialName = name?.toString() || '';
+  const initialArea = areas.find((a) => a.name === area) || areas[0];
+  const initialXp = xp ? Math.abs(parseInt(xp.toString(), 10)) : 2;
+  const initialIsPositive = xp ? parseInt(xp.toString(), 10) >= 0 : true;
+
+  const [goalName, setGoalName] = useState(initialName);
+  const [goalArea, setGoalArea] = useState(initialArea);
+  const [goalXp, setGoalXp] = useState(initialXp);
+  const [isPositive, setIsPositive] = useState(initialIsPositive);
 
   const saveGoal = () => {
-    if (!name.trim()) return;
+    if (!goalName.trim()) return;
 
     const goal = {
-      name: name.trim(),
-      area: area.name,
-      xp: isPositive ? xp : -xp,
+      name: goalName.trim(),
+      area: goalArea.name,
+      xp: isPositive ? goalXp : -goalXp,
     };
 
-    addGoal(goal);
+    if (mode === 'edit' && updateGoal) {
+      updateGoal(initialName, goal);
+    } else {
+      addGoal(goal);
+    }
+
     router.back();
   };
 
@@ -43,8 +56,8 @@ export default function CreateGoalScreen() {
       <TextInput
         style={styles.input}
         placeholder="Goal name"
-        value={name}
-        onChangeText={setName}
+        value={goalName}
+        onChangeText={setGoalName}
       />
 
       <Text style={styles.label}>Area:</Text>
@@ -52,10 +65,10 @@ export default function CreateGoalScreen() {
         {areas.map((a) => (
           <Pressable
             key={a.name}
-            onPress={() => setArea(a)}
+            onPress={() => setGoalArea(a)}
             style={[
               styles.optionButton,
-              area === a && styles.optionSelected,
+              goalArea === a && styles.optionSelected,
             ]}
           >
             <Text>{a.name}</Text>
@@ -68,10 +81,10 @@ export default function CreateGoalScreen() {
         {[2, 3, 5].map((value) => (
           <Pressable
             key={value}
-            onPress={() => setXp(value)}
+            onPress={() => setGoalXp(value)}
             style={[
               styles.optionButton,
-              xp === value && styles.optionSelected,
+              goalXp === value && styles.optionSelected,
             ]}
           >
             <Text>{value}</Text>
@@ -102,6 +115,26 @@ export default function CreateGoalScreen() {
       </View>
 
       <Button title="Save Goal" onPress={saveGoal} />
+
+      {mode === 'edit' && (
+        <Pressable
+          onPress={() => {
+            removeGoal(initialName);
+            router.back();
+          }}
+          style={{
+            marginTop: 12,
+            padding: 10,
+            backgroundColor: '#ff4d4f',
+            borderRadius: 6,
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+            Delete Goal
+          </Text>
+        </Pressable>
+      )}
     </View>
   );
 }

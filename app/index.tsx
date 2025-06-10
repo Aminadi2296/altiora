@@ -111,7 +111,15 @@ export default function Home() {
                 area={goal.area}
                 xp={goal.xp}
                 color={area?.color || '#ccc'}
-                onPress={() => handleGoalPress(goal)} 
+                onPress={() => router.push({
+                pathname: '/create-goal',
+                params: {
+                mode: 'edit',
+                name: goal.name,
+                area: goal.area,
+                xp: goal.xp.toString(),
+              },
+            })} 
               />
             );
           })
