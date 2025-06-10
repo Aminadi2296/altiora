@@ -15,17 +15,15 @@ interface AreaStore {
 export const predefinedColors = [
   '#faa307', // Red-Orange
   '#08427a', // Blue
-  '#4895ef', // blue-Gray
+  '#4895ef', // Blue-Gray
   '#ffd670', // Yellow
-  '#219ebc', // Tourquoise
+  '#219ebc', // Turquoise
   '#7678ed', // Purple
-  '#ef233c', // red
+  '#ef233c', // Red
   '#F39C12', // Orange
   '#ff8fab', // Pink
   '#2ECC71', // Light Green
 ];
-
-let colorIndex = 0;
 
 export const useAreaStore = create<AreaStore>((set, get) => ({
   areas: [
@@ -34,27 +32,31 @@ export const useAreaStore = create<AreaStore>((set, get) => ({
     { name: 'Learning', xp: 20, color: predefinedColors[2] },
     { name: 'Family', xp: 90, color: predefinedColors[3] },
   ],
+
   addArea: (name: string) => {
-    const color = predefinedColors[colorIndex % predefinedColors.length];
-    colorIndex++;
+    set((state) => {
+      const usedColors = new Set(state.areas.map((a) => a.color));
+      const availableColor =
+        predefinedColors.find((c) => !usedColors.has(c)) || '#ccc';
 
-    const newArea: Area = {
-      name,
-      xp: 10,
-      color,
-    };
+      const newArea: Area = {
+        name: name.trim(),
+        xp: 10,
+        color: availableColor,
+      };
 
-    set((state) => ({
-      areas: [...state.areas, newArea],
-    }));
+      return {
+        areas: [...state.areas, newArea],
+      };
+    });
   },
 
   updateAreaXP: (areaName: string, deltaXP: number) =>
-  set((state) => ({
-    areas: state.areas.map((area) =>
-      area.name === areaName
-        ? { ...area, xp: Math.max(0, area.xp + deltaXP) } // no negative XP
-        : area
-    ),
-  })),
+    set((state) => ({
+      areas: state.areas.map((area) =>
+        area.name === areaName
+          ? { ...area, xp: Math.max(0, area.xp + deltaXP) } // no negative XP
+          : area
+      ),
+    })),
 }));

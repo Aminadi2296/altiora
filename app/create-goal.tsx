@@ -36,7 +36,7 @@ export default function CreateGoalScreen() {
 
     const goal = {
       name: goalName.trim(),
-      area: goalArea.name,
+      area: goalArea.name.trim().toLowerCase(),
       xp: isPositive ? goalXp : -goalXp,
     };
 

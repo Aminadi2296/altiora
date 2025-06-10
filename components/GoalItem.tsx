@@ -1,13 +1,12 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-
 type GoalItemProps = {
   name: string;
   area: string;
   xp: number;
-  color: string;
-  onPress?: () => void; 
+  color: string; // <-- this should be passed in from the parent
+  onPress?: () => void;
 };
 
 const GoalItem: React.FC<GoalItemProps> = ({ name, area, xp, color, onPress }) => {

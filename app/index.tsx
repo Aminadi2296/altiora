@@ -103,7 +103,7 @@ export default function Home() {
           <Text>No goals yet</Text>
         ) : (
           goals.map((goal, index) => {
-            const area = areas.find((a) => a.name === goal.area);
+            const area = areas.find((a) => a.name.trim().toLowerCase() === goal.area.trim().toLowerCase());
             return (
               <GoalItem
                 key={index}
