@@ -9,22 +9,37 @@ type AreaProgressProps = {
 
 // Calculate level from XP
 const getLevel = (xp: number): number => {
-  if (xp < 100) return 1;
-  if (xp < 300) return 2;
-  if (xp < 600) return 3;
-  return Math.floor((xp - 100) / 300) + 2;
+  let level = 1;
+  let requiredXP = 100;
+
+  while (xp >= requiredXP) {
+    level++;
+    requiredXP += level * 100;
+  }
+
+  return level;
 };
 
-// Calculate progress bar fill %
+// Calculate progress bar fill % within current level
 const getProgress = (xp: number): number => {
-  const level = getLevel(xp);
-  const nextLevelXP = level === 1 ? 100 : level * 200;
-  const prevLevelXP = level === 1 ? 0 : (level - 1) * 200;
-  const progress = ((xp - prevLevelXP) / (nextLevelXP - prevLevelXP)) * 100;
+  let level = 1;
+  let totalXP = 0;
+  let nextXP = 100;
+
+  while (xp >= nextXP) {
+    totalXP = nextXP;
+    level++;
+    nextXP += level * 100;
+  }
+
+  const currentLevelXP = xp - totalXP;
+  const levelXPRange = nextXP - totalXP;
+
+  const progress = (currentLevelXP / levelXPRange) * 100;
   return Math.min(progress, 100);
 };
 
-const AreaProgress: React.FC<AreaProgressProps> = ({ name, xp, color = '#4CAF50'  }) => {
+const AreaProgress: React.FC<AreaProgressProps> = ({ name, xp, color = '#4CAF50' }) => {
   const level = getLevel(xp);
   const progress = getProgress(xp);
 
@@ -33,7 +48,7 @@ const AreaProgress: React.FC<AreaProgressProps> = ({ name, xp, color = '#4CAF50'
       <Text style={styles.name}>{name}</Text>
 
       <View style={styles.progressBar}>
-        <View style={[styles.progressFill, { width: `${progress}%`, backgroundColor: color }]} /> 
+        <View style={[styles.progressFill, { width: `${progress}%`, backgroundColor: color }]} />
       </View>
 
       <Text style={styles.levelText}>
