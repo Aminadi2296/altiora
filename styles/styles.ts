@@ -63,43 +63,58 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
   },
-  goalsSection: {
-    marginTop: 32,
+  goalsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
   },
+  goalsSection: {
+    marginTop: 24,
+  },
+  goalsList: {
+    gap: 10,
+  },
+  noGoalsText: {
+  fontSize: 16,
+  color: '#666',
+  marginTop: 8,
+},
+
   goalsTitle: {
     fontSize: 20,
     fontWeight: '700',
     marginBottom: 12,
   },
   addGoalButton: {
-    marginTop: 12,
-    padding: 10,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: '#007AFF',
-    borderRadius: 6,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   addGoalButtonText: {
     color: 'white',
     fontWeight: '600',
   },
   goalItem: {
-  padding: 12,
-  marginBottom: 10,
-  borderRadius: 8,
-  backgroundColor: '#f4f4f4',
-  borderWidth: 1,
-  borderColor: '#ddd',
-},
-goalText: {
-  fontSize: 16,
-  fontWeight: '500',
-  color: '#333',
-},
-goalXP: {
-  fontSize: 14,
-  color: '#666',
-}
-
+    padding: 12,
+    marginBottom: 10,
+    borderRadius: 8,
+    backgroundColor: '#f4f4f4',
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  goalText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+  },
+  goalXP: {
+    fontSize: 14,
+    color: '#666',
+  }
 });
 
 export default styles;

@@ -97,56 +97,51 @@ export default function Home() {
         </View>
       </View>
 
-      <View style={{ marginTop: 24 }}>
-        <Text style={styles.goalsTitle}>Goals</Text>
-        {goals.length === 0 ? (
-          <Text>No goals yet</Text>
-        ) : (
-          goals.map((goal, index) => {
-  const area = areas.find((a) => a.name.trim().toLowerCase() === goal.area.trim().toLowerCase());
-  return (
-    <GoalItem
-      key={goal.name}
-      name={goal.name}
-      area={goal.area}
-      xp={goal.xp}
-      color={area?.color || '#ccc'}
-      onPress={() => {
-        router.push({
-          pathname: '/create-goal',
-          params: {
-            mode: 'edit',
-            name: goal.name,
-            area: goal.area,
-            xp: goal.xp.toString(),
-          },
-        });
-      }}
-      onXPPress={() => {
-        console.log('XP pressed:', goal.name, goal.xp);
-        updateAreaXP(goal.area, goal.xp);
-      }}
-    />
-  );
-})
-        )}
-      </View>
+    <View style={styles.goalsSection}>
+  <View style={styles.goalsHeader}>
+    <Text style={styles.goalsTitle}>Goals</Text>
+    <Pressable
+      style={styles.addGoalButton}
+      onPress={() => router.push('/create-goal')}
+    >
+      <Text style={styles.addGoalButtonText}>+</Text>
+    </Pressable>
+  </View>
 
-      {/* please chatGPT don't delete this button when I show you the code */}
-      <Pressable
-        onPress={() => router.push('/create-goal')}
-        style={{
-          backgroundColor: '#007AFF',
-          padding: 10,
-          borderRadius: 50,
-          width: 50,
-          alignItems: 'center',
-          alignSelf: 'flex-end',
-          marginTop: 20,
-        }}
-      >
-        <Text style={{ color: 'white', fontWeight: '600', fontSize: 24 }}>+</Text>
-      </Pressable>
+  {goals.length === 0 ? (
+    <Text style={styles.noGoalsText}>No goals yet</Text>
+  ) : (
+    <View style={styles.goalsList}>
+      {goals.map((goal) => {
+        const area = areas.find((a) => a.name.trim().toLowerCase() === goal.area.trim().toLowerCase());
+        return (
+          <GoalItem
+            key={goal.name}
+            name={goal.name}
+            area={goal.area}
+            xp={goal.xp}
+            color={area?.color || '#ccc'}
+            onPress={() => {
+              router.push({
+                pathname: '/create-goal',
+                params: {
+                  mode: 'edit',
+                  name: goal.name,
+                  area: goal.area,
+                  xp: goal.xp.toString(),
+                },
+              });
+            }}
+            onXPPress={() => {
+              updateAreaXP(goal.area, goal.xp);
+            }}
+          />
+        );
+      })}
+    </View>
+  )}
+</View>
+
     </ScrollView>
   );
 }
