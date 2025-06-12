@@ -51,12 +51,13 @@ export default function Home() {
     usedColors.add(displayColor);
     
     return (
+       <View key={index} style={styles.areaBarWrapper}>
       <AreaProgress
-        key={index}
         name={area.name}
         xp={area.xp}
         color={displayColor}
       />
+    </View>
     );
   })}
 </View>

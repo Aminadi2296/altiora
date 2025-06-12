@@ -57,6 +57,11 @@ areaName: {
   fontSize: 16,
   fontWeight: '500',
 },
+areaBarWrapper: {
+  width: '48%',
+  marginBottom: 1,
+},
+
 
   addButton: {
     backgroundColor: '#007AFF',
