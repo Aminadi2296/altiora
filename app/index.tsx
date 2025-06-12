@@ -5,7 +5,7 @@ import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-nativ
 import AreaProgress from '../components/AreaProgress';
 import GoalItem from '../components/GoalItem';
 import { predefinedColors, useAreaStore } from '../store/useAreaStore';
-import { Goal, useGoalStore } from '../store/useGoalStore';
+import { useGoalStore } from '../store/useGoalStore';
 import styles from '../styles/styles';
 
 
@@ -17,22 +17,21 @@ export default function Home() {
   const addArea = useAreaStore((state) => state.addArea);
 
   const goals = useGoalStore((state) => state.goals);
-  // const removeGoal = useGoalStore((state) => state.removeGoal);
 
   const [showAddForm, setShowAddForm] = React.useState(false);
   const [newAreaName, setNewAreaName] = React.useState('');
-
-  // Handle clicking a goal: subtract XP and remove goal
-  const handleGoalPress = (goal: Goal) => {
-    updateAreaXP(goal.area, goal.xp);
-    // removeGoal(goal.name);
-  };
   const usedColors = new Set<string>();
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.topRow}>
         <Image source={require('../assets/images/avatar.png')} style={styles.avatar} />
+        <View style={styles.sectionHeader}>
+  <Text style={styles.sectionTitle}>Development Areas</Text>
+  <Pressable onPress={() => router.push('/edit-areas')}>
+    <Text style={styles.editIcon}>✏️</Text>
+  </Pressable>
+</View>
       
         <View style={styles.areasContainer}>
         {areas.map((area, index) => {

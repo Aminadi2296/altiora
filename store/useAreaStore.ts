@@ -10,6 +10,8 @@ interface AreaStore {
   areas: Area[];
   addArea: (name: string) => void;
   updateAreaXP: (areaName: string, deltaXP: number) => void;
+  removeArea: (name: string) => void;
+  updateAreaName: (oldName: string, newName: string) => void;
 }
 
 export const predefinedColors = [
@@ -59,4 +61,19 @@ export const useAreaStore = create<AreaStore>((set, get) => ({
           : area
       ),
     })),
+    removeArea: (name: string) =>
+  set((state) => ({
+    areas: state.areas.filter(
+      (area) => area.name.trim().toLowerCase() !== name.trim().toLowerCase()
+    ),
+  })),
+
+updateAreaName: (oldName: string, newName: string) =>
+  set((state) => ({
+    areas: state.areas.map((area) =>
+      area.name.trim().toLowerCase() === oldName.trim().toLowerCase()
+        ? { ...area, name: newName.trim() }
+        : area
+    ),
+  })),
 }));

@@ -16,6 +16,22 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginBottom: 16,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 12,
+    marginBottom: 8,
+},
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#333',
+},
+  editIcon: {
+    fontSize: 18,
+    padding: 4,
+},
   areasContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -25,6 +41,23 @@ const styles = StyleSheet.create({
   addAreaWrapper: {
     marginTop: 16,
   },
+  areaItem: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingVertical: 12,
+  paddingHorizontal: 16,
+  backgroundColor: '#f9f9f9',
+  borderRadius: 8,
+  marginBottom: 10,
+  borderWidth: 1,
+  borderColor: '#eee',
+},
+areaName: {
+  fontSize: 16,
+  fontWeight: '500',
+},
+
   addButton: {
     backgroundColor: '#007AFF',
     padding: 10,
