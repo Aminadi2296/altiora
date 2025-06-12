@@ -35,8 +35,10 @@ const styles = StyleSheet.create({
   areasContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     gap: 12,
+    alignSelf: 'stretch',     // 💥 Ensures it uses full width of parent
+    minWidth: '100%', 
   },
   addAreaWrapper: {
     marginTop: 16,

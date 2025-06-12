@@ -29,10 +29,9 @@ export const predefinedColors = [
 
 export const useAreaStore = create<AreaStore>((set, get) => ({
   areas: [
-    { name: 'Health', xp: 70, color: predefinedColors[0] },
-    { name: 'Career', xp: 40, color: predefinedColors[1] },
-    { name: 'Learning', xp: 20, color: predefinedColors[2] },
-    { name: 'Family', xp: 90, color: predefinedColors[3] },
+    { name: 'Health', xp: 10, color: predefinedColors[0] },
+    { name: 'Career', xp: 10, color: predefinedColors[1] },
+
   ],
 
   addArea: (name: string) => {
