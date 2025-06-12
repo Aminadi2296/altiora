@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -29,8 +30,13 @@ export default function Home() {
         <View style={styles.sectionHeader}>
   <Text style={styles.sectionTitle}>Development Areas</Text>
   <Pressable onPress={() => router.push('/edit-areas')}>
-    <Text style={styles.editIcon}>✏️</Text>
-  </Pressable>
+  <Ionicons
+    name="pencil"
+    size={15}
+    color="#808080"
+    style={{ marginLeft: 8 }} // Add spacing here
+  />
+</Pressable>
 </View>
       
         <View style={styles.areasContainer}>

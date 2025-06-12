@@ -1,15 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-    Alert,
-    FlatList,
-    Pressable,
-    Text,
-    TextInput,
-    View,
+  Alert,
+  FlatList,
+  Platform,
+  Pressable,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 import { useAreaStore } from '../store/useAreaStore';
-import styles from '../styles/styles'; // Your styles file
+import styles from '../styles/styles';
 
 export default function EditAreas() {
   const areas = useAreaStore((state) => state.areas);
@@ -20,18 +21,24 @@ export default function EditAreas() {
   const [newName, setNewName] = useState('');
 
   const confirmDelete = (name: string) => {
-    Alert.alert(
-      'Delete Area',
-      `Are you sure you want to delete "${name}"?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => removeArea(name),
-        },
-      ]
-    );
+    if (Platform.OS === 'web') {
+      if (confirm(`Are you sure you want to delete "${name}"?`)) {
+        removeArea(name);
+      }
+    } else {
+      Alert.alert(
+        'Delete Area',
+        `Are you sure you want to delete "${name}"?`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Delete',
+            style: 'destructive',
+            onPress: () => removeArea(name),
+          },
+        ]
+      );
+    }
   };
 
   const startEditing = (name: string) => {
@@ -64,20 +71,32 @@ export default function EditAreas() {
         data={areas}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <View style={styles.areaItem}>
+          <View
+            style={[
+              styles.areaItem,
+              {
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              },
+            ]}
+          >
             {editingName === item.name ? (
               <>
                 <TextInput
-                  style={[
-                    styles.areaName,
-                    { borderWidth: 1, borderColor: '#ccc', padding: 4, flex: 1 },
-                  ]}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#ccc',
+                    padding: 4,
+                    flex: 1,
+                    marginRight: 8,
+                  }}
                   value={newName}
                   onChangeText={setNewName}
                   autoFocus
                   placeholder="Enter area name"
                 />
-                <Pressable onPress={saveEditing} style={{ marginLeft: 8 }}>
+                <Pressable onPress={saveEditing}>
                   <Ionicons name="checkmark" size={24} color="green" />
                 </Pressable>
                 <Pressable onPress={cancelEditing} style={{ marginLeft: 8 }}>
