@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-
+import { persist } from 'zustand/middleware';
+import { asyncStorage } from '../store/asyncStorageAdapter';
 interface Area {
   name: string;
   xp: number;
@@ -27,52 +28,59 @@ export const predefinedColors = [
   '#2ECC71', // Light Green
 ];
 
-export const useAreaStore = create<AreaStore>((set, get) => ({
-  areas: [
-    { name: 'Health', xp: 10, color: predefinedColors[0] },
-    { name: 'Career', xp: 10, color: predefinedColors[1] },
+export const useAreaStore = create<AreaStore>()(
+  persist(
+    (set, get) => ({
+      areas: [
+        { name: 'Health', xp: 10, color: predefinedColors[0] },
+        { name: 'Career', xp: 10, color: predefinedColors[1] },
+      ],
 
-  ],
+      addArea: (name: string) => {
+        const usedColors = new Set(get().areas.map((a) => a.color));
+        const availableColor =
+          predefinedColors.find((c) => !usedColors.has(c)) || '#ccc';
 
-  addArea: (name: string) => {
-    set((state) => {
-      const usedColors = new Set(state.areas.map((a) => a.color));
-      const availableColor =
-        predefinedColors.find((c) => !usedColors.has(c)) || '#ccc';
+        const newArea: Area = {
+          name: name.trim(),
+          xp: 10,
+          color: availableColor,
+        };
 
-      const newArea: Area = {
-        name: name.trim(),
-        xp: 10,
-        color: availableColor,
-      };
+        set((state) => ({
+          areas: [...state.areas, newArea],
+        }));
+      },
 
-      return {
-        areas: [...state.areas, newArea],
-      };
-    });
-  },
+      updateAreaXP: (areaName: string, deltaXP: number) =>
+        set((state) => ({
+          areas: state.areas.map((area) =>
+            area.name.trim().toLowerCase() === areaName.trim().toLowerCase()
+              ? { ...area, xp: Math.max(0, area.xp + deltaXP) }
+              : area
+          ),
+        })),
 
-  updateAreaXP: (areaName: string, deltaXP: number) =>
-    set((state) => ({
-      areas: state.areas.map((area) =>
-        area.name.trim().toLowerCase() === areaName.trim().toLowerCase()
-          ? { ...area, xp: Math.max(0, area.xp + deltaXP) }
-          : area
-      ),
-    })),
-    removeArea: (name: string) =>
-  set((state) => ({
-    areas: state.areas.filter(
-      (area) => area.name.trim().toLowerCase() !== name.trim().toLowerCase()
-    ),
-  })),
+      removeArea: (name: string) =>
+        set((state) => ({
+          areas: state.areas.filter(
+            (area) =>
+              area.name.trim().toLowerCase() !== name.trim().toLowerCase()
+          ),
+        })),
 
-updateAreaName: (oldName: string, newName: string) =>
-  set((state) => ({
-    areas: state.areas.map((area) =>
-      area.name.trim().toLowerCase() === oldName.trim().toLowerCase()
-        ? { ...area, name: newName.trim() }
-        : area
-    ),
-  })),
-}));
+      updateAreaName: (oldName: string, newName: string) =>
+        set((state) => ({
+          areas: state.areas.map((area) =>
+            area.name.trim().toLowerCase() === oldName.trim().toLowerCase()
+              ? { ...area, name: newName.trim() }
+              : area
+          ),
+        })),
+    }),
+    {
+      name: 'area-store', // Storage key
+      storage: asyncStorage,
+    }
+  )
+);
