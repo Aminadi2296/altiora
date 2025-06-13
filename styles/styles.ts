@@ -41,7 +41,9 @@ const styles = StyleSheet.create({
     minWidth: '100%', 
   },
   addAreaWrapper: {
-    marginTop: 16,
+     width: '100%', // ensure it fills horizontal space
+    paddingHorizontal: 16,
+    marginTop: 20,
   },
   areaItem: {
   flexDirection: 'row',
@@ -76,28 +78,33 @@ areaBarWrapper: {
     fontWeight: '600',
   },
   input: {
-    borderWidth: 1,
+     backgroundColor: '#fff',
     borderColor: '#ccc',
+    borderWidth: 1,
     borderRadius: 6,
-    padding: 8,
-    marginBottom: 8,
+    padding: 10,
+    width: '100%', // ensures input takes full container width
+    marginBottom: 10,
   },
   formRow: {
     flexDirection: 'row',
-    gap: 8,
+    justifyContent: 'space-between',
+    width: '100%', // important!
+    gap: 12,
+    marginTop: 12,
   },
   saveButton: {
-    backgroundColor: '#4CAF50',
-    padding: 10,
-    borderRadius: 6,
     flex: 1,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 10,
+    borderRadius: 6,
     alignItems: 'center',
   },
   cancelButton: {
-    backgroundColor: '#ccc',
-    padding: 10,
+      flex: 1,
+    backgroundColor: '#eee',
+    paddingVertical: 10,
     borderRadius: 6,
-    flex: 1,
     alignItems: 'center',
   },
   buttonText: {
