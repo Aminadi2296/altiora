@@ -9,6 +9,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import HeaderBack from '../components/HeaderBack'; // <-- import HeaderBack
 import { useAreaStore } from '../store/useAreaStore';
 import styles from '../styles/styles';
 
@@ -63,10 +64,9 @@ export default function EditAreas() {
   };
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 16 }}>
-        Development Areas
-      </Text>
+    <View style={{ flex: 1, padding: 16, backgroundColor: '#fff' }}>
+      <HeaderBack title="Edit Areas" />
+
       <FlatList
         data={areas}
         keyExtractor={(item) => item.name}

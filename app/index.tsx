@@ -9,7 +9,6 @@ import { predefinedColors, useAreaStore } from '../store/useAreaStore';
 import { useGoalStore } from '../store/useGoalStore';
 import styles from '../styles/styles';
 
-
 export default function Home() {
   const router = useRouter();
 
@@ -24,43 +23,37 @@ export default function Home() {
   const usedColors = new Set<string>();
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
       <View style={styles.topRow}>
         <Image source={require('../assets/images/avatar.png')} style={styles.avatar} />
+
         <View style={styles.sectionHeader}>
-  <Text style={styles.sectionTitle}>Development Areas</Text>
-  <Pressable onPress={() => router.push('/edit-areas')}>
-  <Ionicons
-    name="pencil"
-    size={15}
-    color="#808080"
-    style={{ marginLeft: 8 }} // Add spacing here
-  />
-</Pressable>
-</View>
-      
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.sectionTitle}>Development Areas</Text>
+            <Pressable onPress={() => router.push('/edit-areas')}>
+              <Ionicons name="pencil" size={15} color="#808080" style={{ marginLeft: 8 }} />
+            </Pressable>
+          </View>
+        </View>
+
         <View style={styles.areasContainer}>
-        {areas.map((area, index) => {
-        let displayColor = area.color;
-    
-    if (usedColors.has(displayColor)) {
-      const availableColor = predefinedColors.find(c => !usedColors.has(c));
-      if (availableColor) displayColor = availableColor;
-    }
-    
-    usedColors.add(displayColor);
-    
-    return (
-       <View key={index} style={styles.areaBarWrapper}>
-      <AreaProgress
-        name={area.name}
-        xp={area.xp}
-        color={displayColor}
-      />
-    </View>
-    );
-  })}
-</View>
+          {areas.map((area, index) => {
+            let displayColor = area.color;
+
+            if (usedColors.has(displayColor)) {
+              const availableColor = predefinedColors.find(c => !usedColors.has(c));
+              if (availableColor) displayColor = availableColor;
+            }
+
+            usedColors.add(displayColor);
+
+            return (
+              <View key={index} style={styles.areaBarWrapper}>
+                <AreaProgress name={area.name} xp={area.xp} color={displayColor} />
+              </View>
+            );
+          })}
+        </View>
 
         <View style={styles.addAreaWrapper}>
           {!showAddForm ? (
@@ -103,51 +96,50 @@ export default function Home() {
         </View>
       </View>
 
-    <View style={styles.goalsSection}>
-  <View style={styles.goalsHeader}>
-    <Text style={styles.goalsTitle}>Goals</Text>
-    <Pressable
-      style={styles.addGoalButton}
-      onPress={() => router.push('/create-goal')}
-    >
-      <Text style={styles.addGoalButtonText}>+</Text>
-    </Pressable>
-  </View>
+      <View style={styles.goalsSection}>
+        <View style={styles.goalsHeader}>
+          <Text style={styles.goalsTitle}>Goals</Text>
+          <Pressable
+            style={styles.addGoalButton}
+            onPress={() => router.push('/create-goal')}
+          >
+            <Text style={styles.addGoalButtonText}>+</Text>
+          </Pressable>
+        </View>
 
-  {goals.length === 0 ? (
-    <Text style={styles.noGoalsText}>No goals yet</Text>
-  ) : (
-    <View style={styles.goalsList}>
-      {goals.map((goal) => {
-        const area = areas.find((a) => a.name.trim().toLowerCase() === goal.area.trim().toLowerCase());
-        return (
-          <GoalItem
-            key={goal.name}
-            name={goal.name}
-            area={goal.area}
-            xp={goal.xp}
-            color={area?.color || '#ccc'}
-            onPress={() => {
-              router.push({
-                pathname: '/create-goal',
-                params: {
-                  mode: 'edit',
-                  name: goal.name,
-                  area: goal.area,
-                  xp: goal.xp.toString(),
-                },
-              });
-            }}
-            onXPPress={() => {
-              updateAreaXP(goal.area, goal.xp);
-            }}
-          />
-        );
-      })}
-    </View>
-  )}
-</View>
-
+        {goals.length === 0 ? (
+          <Text style={styles.noGoalsText}>No goals yet</Text>
+        ) : (
+          <View style={styles.goalsList}>
+            {goals.map((goal) => {
+              const area = areas.find((a) => a.name.trim().toLowerCase() === goal.area.trim().toLowerCase());
+              return (
+                <GoalItem
+                  key={goal.name}
+                  name={goal.name}
+                  area={goal.area}
+                  xp={goal.xp}
+                  color={area?.color || '#ccc'}
+                  onPress={() => {
+                    router.push({
+                      pathname: '/create-goal',
+                      params: {
+                        mode: 'edit',
+                        name: goal.name,
+                        area: goal.area,
+                        xp: goal.xp.toString(),
+                      },
+                    });
+                  }}
+                  onXPPress={() => {
+                    updateAreaXP(goal.area, goal.xp);
+                  }}
+                />
+              );
+            })}
+          </View>
+        )}
+      </View>
     </ScrollView>
   );
 }

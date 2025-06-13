@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 
+import HeaderBack from '../components/HeaderBack'; // <-- import here
 import { useAreaStore } from '../store/useAreaStore';
 import { useGoalStore } from '../store/useGoalStore';
 
@@ -51,7 +52,7 @@ export default function CreateGoalScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Goal</Text>
+      <HeaderBack title={mode === 'edit' ? 'Edit Goal' : 'Create Goal'} />
 
       <TextInput
         style={styles.input}
@@ -141,7 +142,6 @@ export default function CreateGoalScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  title: { fontSize: 20, fontWeight: 'bold', marginBottom: 20 },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
